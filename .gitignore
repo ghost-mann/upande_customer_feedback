@@ -1,0 +1,14 @@
+.DS_Store
+*.pyc
+*.egg-info
+*.swp
+__pycache__
+node_modules
+dev-dist
+build
+.vscode
+
+# NOTE: built frontend assets (upande_customer_feedback/public/frontend) and the
+# generated www/customer-feedback.html ARE committed on purpose, so the app is
+# installable/deployable without running the Frontend build. Rebuild them with
+# `cd Frontend && npm run build`.
