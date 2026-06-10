@@ -1,6 +1,11 @@
 // Post-build: take the feedback area's Vite-emitted index.html and write it to
-// the Frappe www/ template, injecting the Jinja boot block (the per-page `boot`
-// dict is exposed on window.* for the SPA to read).
+// the Frappe www/ template, injecting the Jinja boot block (the per-page
+// `portal_boot` dict is exposed on window.* for the SPA to read).
+//
+// NOTE: the key is `portal_boot`, NOT `boot` — Frappe's website renderer injects
+// its own `boot` into the page context and would overwrite ours, dropping
+// is_guest/csrf_token/frappe_user and leaving the SPA stuck on its login screen.
+// The controller (www/customer_feedback.py) sets context.portal_boot to match.
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -18,8 +23,8 @@ const ROUTES = {
 
 const JINJA_BOOT = `
     <script>
-      {% for key in boot %}
-      window["{{ key }}"] = {{ boot[key] | tojson }};
+      {% for key in portal_boot %}
+      window["{{ key }}"] = {{ portal_boot[key] | tojson }};
       {% endfor %}
     </script>
 `;

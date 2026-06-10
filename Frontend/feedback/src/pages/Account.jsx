@@ -2,31 +2,33 @@ import { useStore } from '../store';
 import Card from '../components/Card';
 import Icon from '@shared/Icon';
 import { avatarBg, initials } from '@shared/utils';
+import { useT } from '../i18n';
 
 export default function Account() {
   const { ctx } = useStore();
-  if (!ctx) return <div className="loading">Loading account</div>;
+  const t = useT();
+  if (!ctx) return <div className="loading">{t('Loading account')}</div>;
 
   return (
     <div className="grid g21">
-      <Card title="Company" sub="Your customer account">
-        <div className="summary-row"><span className="sr-label">Customer</span><span className="sr-value">{ctx.customer_name}</span></div>
-        <div className="summary-row"><span className="sr-label">Customer ID</span><span className="sr-value mono">{ctx.customer}</span></div>
-        <div className="summary-row"><span className="sr-label">Type</span><span className="sr-value">{ctx.customer_type || '—'}</span></div>
-        <div className="summary-row"><span className="sr-label">Group</span><span className="sr-value">{ctx.customer_group || '—'}</span></div>
-        <div className="summary-row"><span className="sr-label">Territory</span><span className="sr-value">{ctx.territory || '—'}</span></div>
-        <div className="summary-row"><span className="sr-label">Currency</span><span className="sr-value">{ctx.currency}</span></div>
-        <div className="summary-row"><span className="sr-label">Payment terms</span><span className="sr-value">{ctx.payment_terms || '—'}</span></div>
+      <Card title={t('Company')} sub={t('Your customer account')}>
+        <div className="summary-row"><span className="sr-label">{t('Customer')}</span><span className="sr-value">{ctx.customer_name}</span></div>
+        <div className="summary-row"><span className="sr-label">{t('Customer ID')}</span><span className="sr-value mono">{ctx.customer}</span></div>
+        <div className="summary-row"><span className="sr-label">{t('Type')}</span><span className="sr-value">{ctx.customer_type || '—'}</span></div>
+        <div className="summary-row"><span className="sr-label">{t('Group')}</span><span className="sr-value">{ctx.customer_group || '—'}</span></div>
+        <div className="summary-row"><span className="sr-label">{t('Territory')}</span><span className="sr-value">{ctx.territory || '—'}</span></div>
+        <div className="summary-row"><span className="sr-label">{t('Currency')}</span><span className="sr-value">{ctx.currency}</span></div>
+        <div className="summary-row"><span className="sr-label">{t('Payment terms')}</span><span className="sr-value">{ctx.payment_terms || '—'}</span></div>
         <div className="divider" />
         <div className="action-row" style={{ marginTop: 0, paddingTop: 0, border: 'none' }}>
           <a className="btn btn-secondary" href="mailto:support@upande.com">
-            <Icon name="support" /> Contact Upande support
+            <Icon name="support" /> {t('Contact Upande support')}
           </a>
         </div>
       </Card>
 
       <div>
-        <Card title="Your account manager">
+        <Card title={t('Your account manager')}>
           {ctx.manager ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
               <div style={{ width: 56, height: 56, borderRadius: '50%', background: avatarBg(ctx.manager.name), color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--mono)', fontWeight: 600, fontSize: 18 }}>
@@ -36,20 +38,20 @@ export default function Account() {
                 <div style={{ fontSize: 15, fontWeight: 500 }}>{ctx.manager.name}</div>
                 <div style={{ fontFamily: 'var(--mono)', fontSize: 11.5, color: 'var(--text-3)', marginTop: 4 }}>{ctx.manager.email}</div>
                 <a className="btn btn-primary" style={{ marginTop: 10 }} href={`mailto:${ctx.manager.email}`}>
-                  <Icon name="mail" /> Email them
+                  <Icon name="mail" /> {t('Email them')}
                 </a>
               </div>
             </div>
           ) : (
             <div style={{ fontSize: 13, color: 'var(--text-3)' }}>
-              No account manager assigned yet. Reach us at <a href="mailto:sales@upande.com" style={{ color: 'var(--accent)' }}>sales@upande.com</a>.
+              {t('No account manager assigned yet. Reach us at')} <a href="mailto:sales@upande.com" style={{ color: 'var(--accent)' }}>sales@upande.com</a>.
             </div>
           )}
         </Card>
 
-        <Card title="Signed in as">
-          <div className="summary-row"><span className="sr-label">User</span><span className="sr-value mono">{ctx.user}</span></div>
-          <div className="summary-row"><span className="sr-label">Name</span><span className="sr-value">{ctx.full_name}</span></div>
+        <Card title={t('Signed in as')}>
+          <div className="summary-row"><span className="sr-label">{t('User')}</span><span className="sr-value mono">{ctx.user}</span></div>
+          <div className="summary-row"><span className="sr-label">{t('Name')}</span><span className="sr-value">{ctx.full_name}</span></div>
         </Card>
       </div>
     </div>

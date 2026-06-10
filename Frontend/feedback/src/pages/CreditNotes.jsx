@@ -5,19 +5,21 @@ import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Icon from '@shared/Icon';
 import EmptyState from '../components/EmptyState';
+import { useT } from '../i18n';
 
 export default function CreditNotes() {
   const { data, loadList } = useStore();
+  const t = useT();
   useEffect(() => { if (data.credit_notes.rows == null) loadList('credit_notes'); }, []);
   const { rows, err } = data.credit_notes;
 
-  if (rows == null) return <div className="loading">Loading credit notes</div>;
+  if (rows == null) return <div className="loading">{t('Loading credit notes')}</div>;
   if (err) return <div className="alert alert-err"><Icon name="error" />{err}</div>;
 
   return (
     <Card
-      title="Credit notes"
-      sub={`${rows.length} credit note${rows.length === 1 ? '' : 's'} on file`}
+      title={t('Credit notes')}
+      sub={`${rows.length} ${rows.length === 1 ? t('Credit note') : t('Credit notes')}`}
       flush
     >
       {rows.length ? (
@@ -25,12 +27,12 @@ export default function CreditNotes() {
           <table className="tbl">
             <thead>
               <tr>
-                <th>Credit note</th>
-                <th>Date</th>
-                <th>Against invoice</th>
+                <th>{t('Credit note')}</th>
+                <th>{t('Date')}</th>
+                <th>{t('Against invoice')}</th>
                 <th>PO</th>
-                <th>Status</th>
-                <th className="right">Amount</th>
+                <th>{t('Status')}</th>
+                <th className="right">{t('Amount')}</th>
                 <th />
               </tr>
             </thead>
@@ -62,8 +64,8 @@ export default function CreditNotes() {
       ) : (
         <EmptyState
           icon="request_quote"
-          title="No credit notes yet"
-          hint="Credit notes issued to resolve your claims will appear here."
+          title={t('No credit notes yet')}
+          hint={t('Credit notes issued to resolve your claims will appear here.')}
         />
       )}
     </Card>

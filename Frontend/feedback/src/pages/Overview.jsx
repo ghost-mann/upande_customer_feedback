@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import Badge from '../components/Badge';
 import Icon from '@shared/Icon';
 import EmptyState from '../components/EmptyState';
+import { useT } from '../i18n';
 
 const KPI_DEFS = [
   { key: 'open_feedback', label: 'Open feedback', sub: 'Awaiting response', page: 'feedback',     icon: 'report' },
@@ -14,9 +15,10 @@ const KPI_DEFS = [
 
 export default function Overview() {
   const { data, setPage, loadDetail } = useStore();
+  const t = useT();
   const ov = data.overview;
 
-  if (!ov) return <div className="loading">Loading</div>;
+  if (!ov) return <div className="loading">{t('Loading')}</div>;
   if (ov.error) return <div className="alert alert-err"><Icon name="error" />{ov.error}</div>;
 
   return (
@@ -24,23 +26,23 @@ export default function Overview() {
       <div className="kpis">
         {KPI_DEFS.map((d) => (
           <div className="kpi" key={d.key} onClick={() => setPage(d.page)}>
-            <div className="kpi-lbl">{d.label}</div>
+            <div className="kpi-lbl">{t(d.label)}</div>
             <div className="kpi-val">{fmt(ov.kpis?.[d.key] || 0)}</div>
-            <div className="kpi-sub">{d.sub}</div>
+            <div className="kpi-sub">{t(d.sub)}</div>
           </div>
         ))}
       </div>
 
       <div className="grid g2">
         <Card
-          title="Recent feedback"
-          sub="Last 5"
-          action={<a className="btn btn-secondary" onClick={() => setPage('feedback')}>View all <Icon name="arrow_forward" /></a>}
+          title={t('Recent feedback')}
+          sub={t('Last 5')}
+          action={<a className="btn btn-secondary" onClick={() => setPage('feedback')}>{t('View all')} <Icon name="arrow_forward" /></a>}
           flush
         >
           {ov.recent_feedback?.length ? (
             <table className="tbl">
-              <thead><tr><th>Ref</th><th>Date</th><th>Type</th><th>Status</th></tr></thead>
+              <thead><tr><th>{t('Ref')}</th><th>{t('Date')}</th><th>{t('Type')}</th><th>{t('Status')}</th></tr></thead>
               <tbody>
                 {ov.recent_feedback.map((r) => (
                   <tr key={r.name} className="clickable" onClick={() => { setPage('feedback'); loadDetail(r.name); }}>
@@ -52,18 +54,18 @@ export default function Overview() {
                 ))}
               </tbody>
             </table>
-          ) : <EmptyState icon="check_circle" title="No feedback yet" />}
+          ) : <EmptyState icon="check_circle" title={t('No feedback yet')} />}
         </Card>
 
         <Card
-          title="Recent credit notes"
-          sub="Last 5"
-          action={<a className="btn btn-secondary" onClick={() => setPage('credit_notes')}>View all <Icon name="arrow_forward" /></a>}
+          title={t('Recent credit notes')}
+          sub={t('Last 5')}
+          action={<a className="btn btn-secondary" onClick={() => setPage('credit_notes')}>{t('View all')} <Icon name="arrow_forward" /></a>}
           flush
         >
           {ov.recent_credit_notes?.length ? (
             <table className="tbl">
-              <thead><tr><th>Credit note</th><th>Date</th><th>Status</th><th className="right">Amount</th></tr></thead>
+              <thead><tr><th>{t('Credit note')}</th><th>{t('Date')}</th><th>{t('Status')}</th><th className="right">{t('Amount')}</th></tr></thead>
               <tbody>
                 {ov.recent_credit_notes.map((r) => (
                   <tr key={r.name} className="clickable" onClick={() => setPage('credit_notes')}>
@@ -75,7 +77,7 @@ export default function Overview() {
                 ))}
               </tbody>
             </table>
-          ) : <EmptyState icon="request_quote" title="No credit notes yet" />}
+          ) : <EmptyState icon="request_quote" title={t('No credit notes yet')} />}
         </Card>
       </div>
     </>

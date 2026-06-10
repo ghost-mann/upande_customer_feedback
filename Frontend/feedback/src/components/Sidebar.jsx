@@ -1,6 +1,7 @@
 import { useStore } from '../store';
 import Icon from '@shared/Icon';
 import { fmt } from '@shared/utils';
+import { useT } from '../i18n';
 
 const NAV = [
   { group: 'Workspace', items: [
@@ -20,13 +21,14 @@ const NAV = [
 
 export default function Sidebar() {
   const { page, setPage, data } = useStore();
+  const t = useT();
   const k = data.overview?.kpis || {};
 
   return (
     <aside className="side">
       {NAV.map((g) => (
         <div key={g.group}>
-          <div className="side-label">{g.group}</div>
+          <div className="side-label">{t(g.group)}</div>
           <div className="side-grp">
             {g.items.map((it) => {
               const count = it.countKey ? k[it.countKey] : null;
@@ -37,7 +39,7 @@ export default function Sidebar() {
                   onClick={() => setPage(it.key)}
                 >
                   <Icon name={it.icon} />
-                  <span>{it.label}</span>
+                  <span>{t(it.label)}</span>
                   {count != null && count > 0 && <span className="nav-cnt">{fmt(count)}</span>}
                 </div>
               );
@@ -45,7 +47,7 @@ export default function Sidebar() {
           </div>
         </div>
       ))}
-      <div className="side-foot">Live</div>
+      <div className="side-foot">{t('Live')}</div>
     </aside>
   );
 }
