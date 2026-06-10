@@ -152,6 +152,27 @@ export async function login(usr, pwd) {
   return true;
 }
 
+// Request a password-reset email (Frappe's guest-allowed reset endpoint).
+// We deliberately resolve regardless of the server's response so the caller can
+// show a single generic message — this avoids leaking which emails have accounts
+// (the endpoint 404s on unknown users) and degrades gracefully when the site has
+// no outgoing email configured. Throws only when the network is unreachable.
+export async function requestPasswordReset(usr) {
+  const body = new URLSearchParams();
+  body.append('user', usr);
+  try {
+    await fetch('/api/method/frappe.core.doctype.user.user.reset_password', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'application/json' },
+      body: body.toString(),
+    });
+  } catch (e) {
+    throw new Error('Could not reach the server. Please try again.');
+  }
+  return true;
+}
+
 // Pull the boot context injected by the Jinja template (e.g. portal.py → boot dict).
 export function getBoot() {
   return {
