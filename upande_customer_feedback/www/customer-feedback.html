@@ -16,8 +16,8 @@
     <div id="root"></div>
   
     <script>
-      {% for key in boot %}
-      window["{{ key }}"] = {{ boot[key] | tojson }};
+      {% for key in portal_boot %}
+      window["{{ key }}"] = {{ portal_boot[key] | tojson }};
       {% endfor %}
     </script>
 
