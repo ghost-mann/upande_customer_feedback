@@ -34,6 +34,10 @@ has_permission = {
 # (upande_kaitet-owned) Customer Feedback doctype with the portal's isolation key
 # and credit-note link; the Role gates portal access.
 fixtures = [
+	# The Customer Feedback (claim) doctype and its line-item child table are
+	# custom doctypes (created in the UI, module CRM). Ship them so the portal's
+	# claim/credit-note flow works on a fresh site without manual recreation.
+	{"dt": "DocType", "filters": [["name", "in", ["Customer Feedback", "Customer Feedback Item"]]]},
 	{"dt": "Role", "filters": [["name", "in", ["Customer Feedback User"]]]},
 	{
 		"dt": "Custom Field",
